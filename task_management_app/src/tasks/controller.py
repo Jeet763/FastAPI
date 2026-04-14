@@ -18,8 +18,8 @@ def create_task(body:Taskschema , db:Session , user:UserModel):
     return new_task
 #     return {"status": "Task Created Successfully..." , "data": new_task}
 
-def get_tasks(db:Session):
-     tasks = db.query(TaskModel).all()
+def get_tasks(db:Session , user: UserModel ):
+     tasks = db.query(TaskModel).filter(TaskModel.user_id == user.id).all()
      return tasks
 
 def get_one_task(task_id:int ,db:Session):

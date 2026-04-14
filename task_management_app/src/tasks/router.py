@@ -16,7 +16,7 @@ def create_task(body : Taskschema , db: Session = Depends(get_db) , user:UserMod
 
 @task_routes.get("/all_tasks" ,response_model = List[TaskResponseSchema], status_code = status. HTTP_200_OK  )
 def get_all_tasks(db: Session = Depends(get_db), user:UserModel = Depends(is_authenticated)):
-    return controller.get_tasks(db)
+    return controller.get_tasks(db , user)
 
 @task_routes.get("/one_task/{task_id}" ,response_model = TaskResponseSchema, status_code = status.HTTP_200_OK)
 def get_one_task(task_id:int, db: Session = Depends(get_db) , user:UserModel = Depends(is_authenticated)):
