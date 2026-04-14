@@ -14,4 +14,4 @@ class UserResponseSchema(BaseModel):
 
 class LoginSchema(BaseModel):
       username: str
-      password: str    
+      password: str
