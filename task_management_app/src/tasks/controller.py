@@ -29,10 +29,15 @@ def get_one_task(task_id:int ,db:Session):
      return one_task
      # return{"status":"Task Fetched Successfully " , "data":one_task }
 
-def update_task(body:Taskschema , task_id:int , db:Session):
-     one_task = db.query(TaskModel).get(task_id)
+def update_task(body:Taskschema , task_id:int , db:Session , user:UserModel):
+     one_task :TaskModel = db.query(TaskModel).get(task_id)
      if not one_task:
           raise HTTPException(404 , detail="Task ID is incorrect")
+     
+     #Authorization
+     if one_task.user_id != user.id:
+          raise HTTPException(401 , detail="You are not authorized to update this task ")
+
     #  one_task.title = body.title
     #  one_task.description = body.description
     #  one_task.is_completed = body.is_completed
@@ -48,11 +53,15 @@ def update_task(body:Taskschema , task_id:int , db:Session):
      # return {"status":"Task Updated Successfully" , "data":one_task}
 
 
-def delete_task(task_id:int , db:Session):
+def delete_task(task_id:int , db:Session , user:UserModel):
      one_task = db.query(TaskModel).get(task_id)
      if not one_task:
           raise HTTPException(404 , detail="Task ID is incorrect")
      
+     #Authorization
+     if one_task.user_id != user.id:
+          raise HTTPException(401 , detail="You are not authorized to delete this task ")
+
      db.delete(one_task)
      db.commit()
      
